@@ -1,0 +1,7 @@
+hi,
+
+just copy the maven package output to this folder and run
+docker-compose up
+to deploy the pastebin thing
+
+tevfik - august 28th, 2015

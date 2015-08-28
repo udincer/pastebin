@@ -1,0 +1,8 @@
+pastebin:
+  build: .
+  ports:
+    - "8080:8080"
+  links:
+    - pastedb
+pastedb:
+  image: mongo
