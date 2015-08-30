@@ -1,7 +1,7 @@
 pastebin:
   build: .
   ports:
-    - "80:80"
+    - "80:8080"
   links:
     - pastedb
 pastedb:
