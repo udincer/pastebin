@@ -33,7 +33,7 @@
     </div>
 
     {{#files}}
-    <p>File: <a href="{{token}}/file/{{ind}}">{{filename}}</a></p>
+    <p>File: <a href="{{token}}/file/{{ind}}">{{filename}}</a> <a href="#" id="deletekey" onclick="deleteFile('{{token}}/file/{{ind}}')" class="glyphicon glyphicon-remove"></a> </p>
     {{/files}}
     {{^files}}
     <p>No files here bro!</p>
@@ -65,6 +65,22 @@
             sendText();
         }
     });
+
+    function deleteFile(path){
+        var ajaxobj = $.ajax(
+                {
+                    type: 'DELETE',
+                    url: path,
+                    contentType: 'application/json; charset=utf-8'
+                }
+        )
+                .done(function (msg) {
+                    location.reload(true);
+                })
+                .fail(function (xhr, textStatus, errorThrown) {
+                    alert(xhr.responseText);
+                });
+    };
 
     function sendText() {
         var text = $("#content").val();

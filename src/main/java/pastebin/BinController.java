@@ -139,6 +139,29 @@ public class BinController {
     }
 
     /**
+     * Delete the file at given index.
+     *
+     * @param token string uniquely identifying resource
+     * @param index index by upload order
+     * @return HTTP response (204 - successfully deleted)
+     */
+    @RequestMapping(value = "/{token}/file/{index}", method = RequestMethod.DELETE)
+    public HttpEntity<byte[]> deleteFile(@PathVariable("token") String token, @PathVariable Integer index) {
+        try {
+            List<GridFSDBFile> list = getFiles(token);
+            GridFSDBFile file = list.get(index);
+            if (file != null) {
+                gridFsTemplate.delete(getQueryByTokenAndFilename(token, file.getFilename()));
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e){
+            return null;
+        }
+    }
+
+    /**
      * Token comes in, list of filenames and indices come out
      *
      * @param token string uniquely identifying resource
@@ -173,6 +196,17 @@ public class BinController {
      */
     private static Query getTokenQuery(String token) {
         return Query.query(GridFsCriteria.whereMetaData("token").is(token));
+    }
+
+    /**
+     * Generates a Query for searching the GridFS metadata for token and filename
+     *
+     * @param token string uniquely identifying resource
+     * @param filename filename for one of the files belonging to the resource
+     * @return Query for searching the GridFS metadata for token and filename
+     */
+    private static Query getQueryByTokenAndFilename(String token, String filename) {
+        return getTokenQuery(token).addCriteria(GridFsCriteria.whereFilename().is(filename));
     }
 
     /**
