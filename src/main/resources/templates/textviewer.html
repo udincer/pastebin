@@ -41,7 +41,9 @@
 </div>
 
 <script>
-    var dz = new Dropzone("div#upload_area", {url: "{{token}}/file"});
+    var dz = new Dropzone("div#upload_area",
+            {url: "{{token}}/file", maxFilesize:1000}
+    );
     dz.on("complete", function (msg) {
         location.reload(true);
     });
